@@ -43,6 +43,10 @@ class SidePanel extends Component {
                 >
                   <div className="userListUserBanner">
                     <img
+                      style={{
+                        width: '16px',
+                        height: '12px',
+                      }}
                       src={bannerURI(user)}
                       onError={function (e) {
                         e.target.src = BANNER_ERROR_URI;

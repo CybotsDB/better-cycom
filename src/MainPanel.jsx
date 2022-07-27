@@ -26,15 +26,17 @@ class MainPanel extends Component {
     this.inputRef.current.focus();
   }
 
+  componentDidUpdate() {
+    const updatedEl = this?.historyRef?.current;
+    if (updatedEl) {
+      updatedEl.scrollTop = updatedEl.scrollHeight;
+    }
+  }
+
   render() {
     const {
       messages,
     } = this.props;
-
-    setTimeout(() => {
-      const updatedEl = this?.historyRef?.current;
-      if (updatedEl) updatedEl.scrollTop = updatedEl.scrollHeight;
-    }, 100)
 
     return (
       <div className="mainPanel">
