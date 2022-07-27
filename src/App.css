@@ -1,0 +1,91 @@
+.app {
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+
+  height: 100vh;
+  width: 100vw;
+
+  position: fixed;
+  right: 0;
+  top: 0;
+  /* border: 1px solid grey; */
+
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+}
+
+.app * {
+  box-sizing: border-box;
+}
+
+.sidePanel {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.channelSelector {
+  display: flex;
+  flex-direction: row;
+}
+
+.channelSelector>select {
+  flex: 1;
+}
+
+.userList {
+  flex: 1;
+  overflow: hidden auto;
+}
+
+.userListUser {
+  display: flex;
+  flex-direction: row;
+  color: #eee;
+  padding: 0 0 2px 2px;
+}
+
+.userListUserBanner {
+  width: 16px;
+  height: 12px;
+  margin-right: 4px;
+}
+
+.userListUserUsername {
+  flex: 1;
+}
+
+.userListUserRank {
+  width: 20px;
+  text-align: right;
+}
+
+.mainPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatHistory {
+  flex: 1;
+  overflow: auto;
+  padding-bottom: 2px;
+}
+
+.messageInput {
+  display: flex;
+  flex-direction: row;
+}
+
+.messageInput input {
+  flex: 1;
+  outline: none;
+  background-color: #000;
+  color: #eee;
+  border: 1px dotted #006400;
+}
