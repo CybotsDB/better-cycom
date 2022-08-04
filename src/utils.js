@@ -4,6 +4,7 @@ import {
 } from './constants'
 
 export function getUserColor(user) {
+  if (user.username === 'kodeking') return '#dc8eff';
   if (user.vetrank == 1) return '#7281ca';
   if (user.rank == 1) return '#ff394b';
   if (user.vetrank <= 25 && user.vetrank > 0) return '#a2cffd';

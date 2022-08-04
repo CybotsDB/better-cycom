@@ -40,6 +40,16 @@ class App extends Component {
   onSocketLoginResult = (event) => {
     const { socket } = this.props;
     socket.emit('channel', { type: "join" });
+    this.setState({
+      messages: [
+        ...this.state?.messages || [],
+        {
+          _id: randomId(),
+          type: 'system',
+          message: 'Welcome to CyCom'
+        },
+      ],
+    })
   }
 
   onSocketChannel = (event) => {
@@ -53,16 +63,11 @@ class App extends Component {
           ...this.state?.messages || [],
           {
             _id: randomId(),
-            type: 'system',
-            message: 'Welcome to CyCom'
-          },
-          {
-            _id: randomId(),
             type: 'join',
             username: data.username,
           }
         ],
-      })
+      });
     } else if (data.type === 'leave') {
       this.setState({
         messages: [
