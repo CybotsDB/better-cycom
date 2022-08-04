@@ -20,3 +20,8 @@ export function bannerURI(user) {
 
   return [BANNER_BASE_URI, bannerFile].join('').toLowerCase();
 }
+
+export function randomId() {
+  const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
+  return uint32.toString(16);
+}

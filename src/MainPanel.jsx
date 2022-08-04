@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import { Component, createRef } from 'react';
-import { getUserColor, bannerURI } from './utils';
+import { getUserColor, bannerURI, randomId } from './utils';
 
 import Message from './Message';
 
@@ -9,6 +9,10 @@ class MainPanel extends Component {
     super(props);
     this.inputRef = createRef();
     this.historyRef = createRef();
+    this.userScrolled = false;
+    this.state = {
+      historicMessages: [],
+    };
   }
 
   onKeyUp = (e) => {
@@ -24,12 +28,69 @@ class MainPanel extends Component {
 
   componentDidMount() {
     this.inputRef.current.focus();
+    const updatedEl = this?.historyRef?.current;
+    if (updatedEl) {
+      updatedEl.scrollTop = updatedEl.scrollHeight;
+    }
+
+    if (!this.loadingHistory) {
+      this.loadingHistory = true;
+      fetch('https://cycom-logs.herokuapp.com/api/message-history')
+        .then(res => res.json())
+        .then((response) => {
+          this.loadingHistory = false;
+
+          this.setState({
+            historicMessages: response.data.reverse(),
+            nextCursor: response.pagination.next_cursor,
+          });
+        });
+    }
   }
 
   componentDidUpdate() {
     const updatedEl = this?.historyRef?.current;
     if (updatedEl) {
-      updatedEl.scrollTop = updatedEl.scrollHeight;
+      if (!this.userScrolled) {
+        updatedEl.scrollTop = updatedEl.scrollHeight;
+      }
+    }
+  }
+
+  onScroll = (e) => {
+    const updatedEl = e.currentTarget;
+
+    const scroll = updatedEl.scrollTop;
+    const maxScroll = updatedEl.scrollHeight - updatedEl.clientHeight;
+
+    const threshold = 50;
+    const isScrollBottomedOut = maxScroll - scroll < threshold;
+
+    this.userScrolled = !isScrollBottomedOut;
+
+    if (scroll === 0) {
+      this.setState({
+        historicMessages: [
+          ...this.state.historicMessages,
+        ]
+      });
+
+      if (!this.loadingHistory) {
+        this.loadingHistory = true;
+        fetch(`https://cycom-logs.herokuapp.com/api/message-history?cursor=${this.state.nextCursor}`)
+          .then(res => res.json())
+          .then((response) => {
+            this.loadingHistory = false;
+
+            this.setState({
+              historicMessages: [
+                ...response.data.reverse(),
+                ...this.state.historicMessages,
+              ],
+              nextCursor: response.pagination.next_cursor,
+            });
+          });
+      }
     }
   }
 
@@ -38,16 +99,25 @@ class MainPanel extends Component {
       messages,
     } = this.props;
 
+    const {
+      historicMessages,
+    } = this.state;
+
     return (
       <div className="mainPanel">
         <div
           className="chatHistory"
           ref={this.historyRef}
+          onScroll={this.onScroll}
         >
-          <Message message={{ type: 'system', message: 'Welcome to CyCom' }} />
+          {
+            historicMessages.map((message) => {
+              return <Message key={message._id} message={message} />
+            })
+          }
           {
             messages.map((message) => {
-              return <Message message={message} />
+              return <Message key={message._id} message={message} />
             })
           }
         </div>

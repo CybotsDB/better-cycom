@@ -100,7 +100,7 @@ class Message extends Component {
 
     return (
       <div>
-        hi!
+        Unknown message type {message.type}
       </div>
     )
   }

@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader/root';
 import { Component, useState } from 'react'
 import './App.css'
-import { getUserColor, bannerURI } from './utils';
+import { getUserColor, bannerURI, randomId } from './utils';
 import {
   BANNER_BASE_URI,
   BANNER_ERROR_URI,
@@ -20,7 +20,7 @@ class App extends Component {
       booted: false,
       users: [],
       channels: null,
-      messages: window.messageHistory || [],
+      messages: [],
     };
   }
 
@@ -52,6 +52,12 @@ class App extends Component {
         messages: [
           ...this.state?.messages || [],
           {
+            _id: randomId(),
+            type: 'system',
+            message: 'Welcome to CyCom'
+          },
+          {
+            _id: randomId(),
             type: 'join',
             username: data.username,
           }
@@ -88,6 +94,8 @@ class App extends Component {
 
   onSocketChat = (event) => {
     const data = JSON.parse(event)
+
+    data._id = randomId();
 
     if (data.sender) {
       data.user = {
@@ -139,11 +147,13 @@ class App extends Component {
 
     message.user.bannerURI = bannerURI(message.user);
 
-
     this.setState({
       messages: [
         ...this.state.messages,
-        message,
+        {
+          _id: randomId(),
+          ...message,
+        },
       ]
     })
   }
@@ -159,8 +169,6 @@ class App extends Component {
       users,
       messages,
     } = this.state;
-
-    window.messageHistory = messages;
 
     return (
       <div className='app'>
