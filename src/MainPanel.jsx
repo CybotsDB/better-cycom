@@ -35,7 +35,7 @@ class MainPanel extends Component {
 
     if (!this.loadingHistory) {
       this.loadingHistory = true;
-      fetch('https://cycom-logs.herokuapp.com/api/message-history')
+      fetch('https://cycom-logger.fly.dev/api/message-history')
         .then(res => res.json())
         .then((response) => {
           this.loadingHistory = false;
@@ -77,7 +77,7 @@ class MainPanel extends Component {
 
       if (!this.loadingHistory) {
         this.loadingHistory = true;
-        fetch(`https://cycom-logs.herokuapp.com/api/message-history?cursor=${this.state.nextCursor}`)
+        fetch(`https://cycom-logger.fly.dev/api/message-history?cursor=${this.state.nextCursor}`)
           .then(res => res.json())
           .then((response) => {
             this.loadingHistory = false;
