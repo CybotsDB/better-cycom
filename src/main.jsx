@@ -6,8 +6,7 @@ import App from './App';
 const attemptBoot = () => {
 
   const url = new URL(window.location.href);
-  const username = url.searchParams.get('username');
-  const password = url.searchParams.get('password');
+  const jwt = url.searchParams.get('jwt');
 
   const socket = io.connect('http://playcybots.com:2020');
 
@@ -15,8 +14,7 @@ const attemptBoot = () => {
     <React.StrictMode>
       <App
         socket={socket}
-        username={username}
-        password={password}
+        jwt={jwt}
       />
     </React.StrictMode>
   )

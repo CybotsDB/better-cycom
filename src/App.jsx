@@ -26,13 +26,12 @@ class App extends Component {
 
   onSocketConnect = (event) => {
     const {
-      username,
-      password,
+      jwt,
       socket,
     } = this.props;
 
     if (!this.loggingIn) {
-      socket.emit('login', { username, password });
+      socket.emit('login', { jwt });
       this.loggingIn = true;
     }
   }
